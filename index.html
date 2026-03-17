@@ -12,7 +12,6 @@
     
     <style>
         :root {
-            /* Dark Theme Variables (Default) */
             --bg-color: #030305;
             --bg-color-alt: #0a0a0f;
             --text-main: #ffffff;
@@ -27,7 +26,6 @@
         }
 
         body.light-mode {
-            /* Light Theme Variables */
             --bg-color: #f8fafc;
             --bg-color-alt: #f1f5f9;
             --text-main: #020617;
@@ -43,7 +41,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Custom cursor */
+            cursor: none;
         }
 
         body {
@@ -62,13 +60,11 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
 
-        /* Custom Cursor */
         .cursor-dot {
             width: 8px; height: 8px;
             background: var(--accent-cyan);
@@ -98,7 +94,6 @@
             border-color: var(--accent-cyan);
         }
 
-        /* Glassmorphism Utilities */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -122,7 +117,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Buttons */
         .magnetic-btn {
             display: inline-flex; align-items: center; justify-content: center;
             padding: 1rem 2rem;
@@ -151,7 +145,6 @@
         }
         .btn-secondary:hover { border-color: var(--accent-cyan); background: rgba(0,240,255,0.1); }
 
-        /* Navigation */
         nav {
             position: fixed; top: 0; left: 0; width: 100%;
             padding: 1.5rem 5%;
@@ -177,14 +170,12 @@
         }
         .theme-toggle-btn:hover { color: var(--accent-cyan); background: var(--glass-bg); }
 
-        /* Section Settings */
         section { padding: 8rem 5%; position: relative; }
         .section-title {
             font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 3rem; text-align: center;
             text-transform: uppercase; letter-spacing: 2px;
         }
 
-        /* Hero Section */
         #hero {
             height: 100vh; 
             display: flex; 
@@ -197,7 +188,6 @@
             transition: background-color 0.4s ease;
         }
 
-        /* Interactive Canvas Layer */
         #hero-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -205,7 +195,6 @@
             opacity: 0.8;
         }
 
-        /* Animated Glowing Core */
         .hero-core {
             position: absolute;
             top: 50%; left: 50%;
@@ -223,7 +212,6 @@
             100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
         }
 
-        /* Floating 3D Glass Shapes */
         .floating-shape {
             position: absolute;
             z-index: 1;
@@ -252,7 +240,6 @@
             align-items: center;
         }
         
-        /* Sleek Centered Badge */
         .availability-badge {
             display: inline-flex; align-items: center; gap: 0.6rem;
             padding: 0.5rem 1rem;
@@ -317,7 +304,6 @@
         .hero-desc { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--text-muted); margin-bottom: 3rem; max-width: 650px; line-height: 1.6; }
         .hero-btns { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
 
-        /* Scroll Indicator */
         .scroll-indicator {
             position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
             display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -337,7 +323,6 @@
             100% { transform: translateY(15px); opacity: 0; }
         }
 
-        /* About Section */
         .stats-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem; margin-top: 4rem;
@@ -349,7 +334,6 @@
         .stat-num { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 700; font-family: var(--font-head); margin-bottom: 1rem; color: var(--accent-cyan); }
         .stat-text { font-size: 1.1rem; color: var(--text-muted); }
 
-        /* Skills Galaxy */
         #skills { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;}
         .galaxy-container {
             position: relative; width: 600px; height: 600px;
@@ -402,7 +386,6 @@
         @keyframes counterRotate { 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
         @keyframes counterRotateRev { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* Featured Project */
         .featured-wrapper {
             position: relative; width: 100%; height: 80vh;
             border-radius: 30px; overflow: hidden;
@@ -413,20 +396,19 @@
             object-fit: cover;
             z-index: 0;
             filter: brightness(0.4);
-            background-color: #1a1a2e; /* Fallback */
+            background-color: #1a1a2e;
         }
         .featured-content { position: relative; z-index: 1; max-width: 600px; }
         .tags { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;}
         .tag { padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; background: var(--glass-bg); backdrop-filter: blur(5px); border: 1px solid var(--glass-border); color: #fff; }
 
-        /* 3D Project Carousel */
         #projects { overflow: hidden; }
         .carousel-container {
             position: relative; width: 100%; height: 500px;
             display: flex; align-items: center; justify-content: center;
             perspective: 1200px; margin-top: 3rem;
-            user-select: none; 
-            touch-action: pan-y; 
+            user-select: none;
+            touch-action: pan-y;
         }
         .carousel-card {
             position: absolute; width: 350px; height: 450px;
@@ -439,7 +421,7 @@
             border-bottom: 1px solid var(--glass-border); 
             transition: transform 0.5s; 
             background-color: #1a1a2e;
-            pointer-events: none; 
+            pointer-events: none;
         }
         .carousel-card:hover img { transform: scale(1.05); }
         .card-info { padding: 1.5rem; height: 40%; display: flex; flex-direction: column; justify-content: space-between; }
@@ -450,14 +432,12 @@
         .ctrl-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-main); display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         .ctrl-btn:hover { background: var(--accent-cyan); color: #fff; border-color: var(--accent-cyan); }
 
-        /* Earth Navigator */
         #earth-section { height: 100vh; position: relative; display: flex; align-items: center; }
         #earth-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
         .earth-overlay { position: relative; z-index: 1; pointer-events: none; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
         .earth-title { font-size: clamp(2.5rem, 5vw, 3rem); margin-bottom: 1rem; max-width: 500px; pointer-events: auto; }
         .earth-subtitle { color: var(--text-muted); max-width: 400px; pointer-events: auto; }
 
-        /* Timeline */
         .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 4rem 0; }
         .timeline::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background: linear-gradient(to bottom, transparent, var(--accent-cyan), var(--accent-purple), transparent); }
         .timeline-item { display: flex; justify-content: flex-end; padding-right: 50%; position: relative; margin-bottom: 4rem; width: 100%; }
@@ -467,7 +447,6 @@
         .timeline-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: var(--bg-color); border: 4px solid var(--accent-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--accent-cyan); z-index: 2; }
         .time-date { color: var(--accent-cyan); font-weight: 600; margin-bottom: 0.5rem; display: block; }
 
-        /* Contact Section */
         .contact-container { max-width: 800px; margin: 0 auto; text-align: center; }
         .contact-links {
             display: flex; flex-direction: column; gap: 1.5rem; align-items: center; justify-content: center;
@@ -476,19 +455,17 @@
             min-width: 280px; width: auto; display: flex; gap: 12px; font-size: 1.1rem; justify-content: center;
         }
         .btn-whatsapp {
-            border-color: #25D366; color: #25D366 !important; 
+            border-color: #25D366; color: #25D366 !important;
         }
         .btn-whatsapp:hover {
             background: rgba(37, 211, 102, 0.1); border-color: #25D366; color: #25D366 !important;
         }
 
-        /* Footer */
         footer { padding: 4rem 5%; border-top: 1px solid var(--glass-border); text-align: center; background: var(--bg-color-alt); transition: background 0.4s ease;}
         .social-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; }
         .social-links a { width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); color: var(--text-main); display: flex; align-items: center; justify-content: center; transition: all 0.3s; border: 1px solid var(--glass-border); }
         .social-links a:hover { background: var(--accent-cyan); color: #fff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,240,255,0.2); border-color: var(--accent-cyan); }
 
-        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
@@ -508,7 +485,6 @@
         .modal-body h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 1rem; color: var(--text-main); }
         .modal-body p { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
 
-        /* Responsive */
         @media (max-width: 768px) {
             section { padding: 6rem 5%; }
             .nav-links { display: none; }
@@ -540,11 +516,9 @@
 </head>
 <body>
 
-    <!-- Custom Cursor -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- Navigation -->
     <nav id="navbar">
         <a href="#" class="logo gradient-text-accent interactable">AT.</a>
         <div class="nav-right">
@@ -554,34 +528,27 @@
                 <a href="#earth-section" class="interactable">Globe</a>
                 <a href="#contact" class="interactable">Contact</a>
             </div>
-            <!-- Theme Toggle Button -->
             <button id="theme-toggle" class="theme-toggle-btn interactable" aria-label="Toggle Theme">
                 <i data-lucide="sun"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section id="hero">
-        <!-- Interactive Particle Network -->
         <canvas id="hero-canvas"></canvas>
         
-        <!-- Glowing Ambient Core -->
         <div class="hero-core"></div>
         
-        <!-- Floating Glass Shapes -->
         <div class="floating-shape shape-1"></div>
         <div class="floating-shape shape-2"></div>
         <div class="floating-shape shape-3"></div>
 
         <div class="hero-content">
             
-            <!-- Sleek Availability Badge -->
             <div class="availability-badge">
                 <span class="pulse-dot"></span> Available for New Projects
             </div>
 
-            <!-- Main Content -->
             <h1 class="hero-title">Hi, I'm <br><span class="gradient-text-accent">Aryan Tyagi</span></h1>
             
             <div class="hero-subtitle-wrapper">
@@ -597,7 +564,6 @@
         </div>
     </section>
 
-    <!-- About Section -->
     <section id="about">
         <h2 class="section-title fade-up">Beyond the <span class="gradient-text-accent">Code</span></h2>
         <div style="max-width: 800px; margin: 0 auto; text-align: center;" class="fade-up">
@@ -622,7 +588,6 @@
         </div>
     </section>
 
-    <!-- Skills Galaxy -->
     <section id="skills">
         <h2 class="section-title fade-up">Tech <span class="gradient-text-accent">Galaxy</span></h2>
         <div class="galaxy-container fade-up interactable">
@@ -643,10 +608,8 @@
         </div>
     </section>
 
-    <!-- Featured Project -->
     <section id="featured">
         <div class="featured-wrapper interactable" id="featured-parallax">
-            
             <img src="pilot.png" alt="Pilots Quest" class="featured-bg-img" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop'">
             
             <div class="featured-content fade-up">
@@ -663,7 +626,6 @@
         </div>
     </section>
 
-    <!-- 3D Carousel Projects -->
     <section id="projects">
         <h2 class="section-title fade-up">Selected <span class="gradient-text-accent">Works</span></h2>
         
@@ -677,7 +639,6 @@
         </div>
     </section>
 
-    <!-- Earth Navigator -->
     <section id="earth-section">
         <canvas id="earth-canvas"></canvas>
         <div class="earth-overlay fade-up" style="padding: 0 5%;">
@@ -686,7 +647,6 @@
         </div>
     </section>
 
-    <!-- Timeline -->
     <section id="timeline">
         <h2 class="section-title fade-up">My <span class="gradient-text-accent">Journey</span></h2>
         <div class="timeline">
@@ -717,7 +677,6 @@
         </div>
     </section>
 
-    <!-- Contact -->
     <section id="contact">
         <div class="contact-container glass-card fade-up" style="padding: 4rem;">
             <h2 class="section-title" style="margin-bottom: 1rem;">Let's <span class="gradient-text-accent">Connect</span></h2>
@@ -739,7 +698,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="social-links">
             <a href="https://github.com/aryan4502" class="interactable"><i data-lucide="github"></i></a>       
@@ -748,7 +706,6 @@
         <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 Aryan Tyagi. All rights reserved.</p>
     </footer>
 
-    <!-- Project Modal -->
     <div class="modal-overlay" id="project-modal">
         <div class="modal-content">
             <button class="close-modal interactable" id="close-modal"><i data-lucide="x" style="width: 24px; height: 24px;"></i></button>
@@ -762,7 +719,6 @@
         </div>
     </div>
 
- 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
@@ -774,13 +730,11 @@
         document.addEventListener("DOMContentLoaded", () => {
             
             try {
-                // Init icons safely
                 if (window.lucide) {
                     lucide.createIcons();
                 }
             } catch(e) { console.error("Lucide Error:", e); }
 
-            // Theme Toggle Logic
             const themeBtn = document.getElementById('theme-toggle');
             themeBtn.addEventListener('click', () => {
                 document.body.classList.toggle('light-mode');
@@ -790,10 +744,9 @@
                 } else {
                     icon.setAttribute('data-lucide', 'sun');
                 }
-                if (window.lucide) lucide.createIcons(); 
+                if (window.lucide) lucide.createIcons();
             });
 
-     
             const projectsData = [
                 { id: 1, title: 'Pilots Quest', url: 'https://pilotsquest.com/', desc: 'Interactive aviation platform with advanced 3D elements and smooth data visualization.', img: 'pilot1.png', tags: ['HTML', 'JS', 'WebGL', 'Tailwind'] },
                 { id: 2, title: 'Kaaj Tech', url: 'https://kaajtech.in/', desc: 'Modern corporate portal featuring smooth transitions and semantic structural integration.', img: 'kaaj.png', tags: ['HTML', 'CSS', 'JS', 'Tailwind'] },
@@ -807,7 +760,6 @@
                 { id: 10, title: 'Shishu Dhanam', url: 'https://shishudhanam.com/', desc: 'Educational resource platform with interactive learning paths for children.', img: 'shishudhanam.png', tags: ['HTML', 'CSS', 'JS', 'WebGL'] }
             ];
 
-            // Typing Effect Logic
             const roles = ["Web Developer", "Frontend Architect", "Creative Coder"];
             let roleIndex = 0;
             let charIndex = 0;
@@ -842,7 +794,6 @@
 
             typeEffect();
 
-            // Hero Particle Canvas
             try {
                 const canvas = document.getElementById('hero-canvas');
                 if (canvas) {
@@ -940,7 +891,6 @@
                 }
             } catch(e) { console.error("Hero Particles Error:", e); }
 
-            // Smooth Scrolling Setup
             let lenis;
             try {
                 if (typeof Lenis !== 'undefined') {
@@ -950,7 +900,6 @@
                 }
             } catch(e) { console.error("Lenis Error:", e); }
             
-            // GSAP Animations Setup
             try {
                 if (window.gsap && window.ScrollTrigger) {
                     gsap.registerPlugin(ScrollTrigger);
@@ -962,7 +911,6 @@
                         });
                     });
 
-                    // Featured Parallax
                     gsap.to('.featured-bg-img', {
                         yPercent: 30, ease: "none",
                         scrollTrigger: { trigger: "#featured", start: "top bottom", end: "bottom top", scrub: true }
@@ -970,7 +918,6 @@
                 }
             } catch(e) { console.error("GSAP Error:", e); }
             
-            // Custom Cursor
             try {
                 const cursorDot = document.querySelector('.cursor-dot');
                 const cursorOutline = document.querySelector('.cursor-outline');
@@ -978,13 +925,11 @@
                     window.addEventListener('mousemove', (e) => {
                         const posX = e.clientX; const posY = e.clientY;
                         cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
-                       
                         if(cursorOutline.animate) {
                             cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
                         }
                     });
 
-                 
                     document.querySelectorAll('.interactable, a, button').forEach(el => {
                         el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
                         el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -992,7 +937,6 @@
                 }
             } catch(e) { console.error("Cursor Error:", e); }
 
-            // Magnetic Buttons
             try {
                 if (window.gsap) {
                     document.querySelectorAll('.magnetic-btn').forEach(btn => {
@@ -1009,7 +953,6 @@
                 }
             } catch(e) { console.error("Magnetic Button Error:", e); }
 
-            // Navbar Scroll
             window.addEventListener('scroll', () => {
                 const nav = document.getElementById('navbar');
                 if(nav) {
@@ -1018,12 +961,10 @@
                 }
             });
 
-           
             try {
                 const carouselContainer = document.getElementById('carousel');
                 let currentCarouselIdx = 0;
                 
-                // Build cards
                 projectsData.forEach((proj) => {
                     const card = document.createElement('div');
                     card.className = 'carousel-card glass-card interactable';
@@ -1036,7 +977,6 @@
                         </div>
                     `;
                     
-                  
                     card.addEventListener('click', (e) => {
                         if(isSwipingCarousel) {
                             e.preventDefault();
@@ -1054,7 +994,7 @@
                     cards.forEach((card, i) => {
                         const offset = i - currentCarouselIdx;
                         const absOffset = Math.abs(offset);
-                 
+                        
                         const translateZ = -absOffset * 150;
                         const translateX = offset * 250;
                         const rotateY = offset * -15; 
@@ -1074,16 +1014,14 @@
                 let dragStartX = 0;
                 let isSwipingCarousel = false;
 
-                // Mouse Drag
                 carouselContainer.addEventListener('mousedown', (e) => {
                     dragStartX = e.clientX;
                     isSwipingCarousel = false;
                 });
                 carouselContainer.addEventListener('mousemove', (e) => {
-                    if (e.buttons === 1) { 
+                    if (e.buttons === 1) {
                         const diff = dragStartX - e.clientX;
                         if (Math.abs(diff) > 10) isSwipingCarousel = true;
-                        
                         
                         if (Math.abs(diff) > 50) {
                             if (diff > 0 && currentCarouselIdx < projectsData.length - 1) {
@@ -1097,7 +1035,6 @@
                     }
                 });
 
-              
                 carouselContainer.addEventListener('touchstart', (e) => {
                     dragStartX = e.touches[0].clientX;
                     isSwipingCarousel = false;
@@ -1136,7 +1073,6 @@
                 updateCarousel();
             } catch(e) { console.error("Carousel Error:", e); }
 
-            // Modal Logic 
             const modal = document.getElementById('project-modal');
             const modalImg = document.getElementById('modal-img');
             const modalTitle = document.getElementById('modal-title');
@@ -1192,7 +1128,6 @@
                     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
                     const geometry = new THREE.SphereGeometry(3, 64, 64);
-                    // Dark theme default globe color
                     const material = new THREE.MeshBasicMaterial({ color: 0x050508 });
                     const sphere = new THREE.Mesh(geometry, material);
                     scene.add(sphere);
@@ -1254,8 +1189,8 @@
                     camera.position.z = 8;
 
                     const raycaster = new THREE.Raycaster();
-                    const mouse = new THREE.Vector2(-10, -10); 
-                    let isHoveringGlobe = false; 
+                    const mouse = new THREE.Vector2(-10, -10);
+                    let isHoveringGlobe = false;
 
                     const getCanvasMousePos = (clientX, clientY) => {
                         const rect = renderer.domElement.getBoundingClientRect();
@@ -1293,7 +1228,6 @@
                             mouse.x = pos.x;
                             mouse.y = pos.y;
                             
-                           
                             isHoveringGlobe = true;
 
                             raycaster.setFromCamera(mouse, camera);
@@ -1307,8 +1241,8 @@
                     };
                     
                     const onTouchEnd = () => {
-                        isHoveringGlobe = false; 
-                        mouse.x = -10; mouse.y = -10; 
+                        isHoveringGlobe = false;
+                        mouse.x = -10; mouse.y = -10;
                     };
 
                     renderer.domElement.addEventListener('mousemove', onMouseMove);
@@ -1317,7 +1251,6 @@
                     renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: true });
                     renderer.domElement.addEventListener('touchcancel', onTouchEnd, { passive: true });
                     
- 
                     renderer.domElement.addEventListener('mouseleave', () => {
                         mouse.x = -10;
                         mouse.y = -10;
@@ -1328,24 +1261,20 @@
                         
                         raycaster.setFromCamera(mouse, camera);
                         
-                     
                         const intersectsGlobeAll = raycaster.intersectObjects([sphere, wireframeSphere, ...markerObjects]);
-                        
                         
                         if (intersectsGlobeAll.length > 0) {
                             isHoveringGlobe = true;
                         } else {
-                           
                             isHoveringGlobe = false;
                         }
-                     
+                        
                         if (!isHoveringGlobe) {
                             sphere.rotation.y += 0.0008;
                             wireframeSphere.rotation.y += 0.0008;
                             markers.rotation.y += 0.0008;
                         }
                         
-                      
                         const intersectsNodes = raycaster.intersectObjects(markerObjects);
                         markerObjects.forEach(m => m.parent.scale.set(1, 1, 1));
                         
