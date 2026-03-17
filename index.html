@@ -238,7 +238,6 @@
         }
         .mobile-socials a:hover { background: var(--accent-cyan); color: #fff; border-color: var(--accent-cyan); transform: translateY(-3px); }
 
-
         section { padding: 8rem 5%; position: relative; }
         .section-title {
             font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 3rem; text-align: center;
@@ -1248,10 +1247,13 @@
                     renderer.setSize(window.innerWidth, window.innerHeight);
                     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+                    const globeGroup = new THREE.Group();
+                    scene.add(globeGroup);
+
                     const geometry = new THREE.SphereGeometry(3, 64, 64);
                     const material = new THREE.MeshBasicMaterial({ color: 0x050508 });
                     const sphere = new THREE.Mesh(geometry, material);
-                    scene.add(sphere);
+                    globeGroup.add(sphere);
 
                     const wireframeMaterial = new THREE.MeshBasicMaterial({ 
                         color: 0x00f0ff, 
@@ -1261,10 +1263,21 @@
                     });
                     const wireframeSphere = new THREE.Mesh(geometry, wireframeMaterial);
                     wireframeSphere.scale.set(1.02, 1.02, 1.02);
-                    scene.add(wireframeSphere);
+                    globeGroup.add(wireframeSphere);
+                    
+                    const updateEarthColors = () => {
+                        const isLight = document.body.classList.contains('light-mode');
+                        material.color.setHex(isLight ? 0xf8fafc : 0x050508);
+                        wireframeMaterial.color.setHex(isLight ? 0x0ea5e9 : 0x00f0ff);
+                        wireframeMaterial.opacity = isLight ? 0.3 : 0.15;
+                    };
+                    updateEarthColors();
+
+                    const themeObserver = new MutationObserver(updateEarthColors);
+                    themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
                     const markers = new THREE.Group();
-                    scene.add(markers);
+                    globeGroup.add(markers);
 
                     function calcPosFromLatLonRad(lat, lon, radius) {
                         const phi = (90 - lat) * (Math.PI / 180);
@@ -1303,15 +1316,17 @@
                         markerObjects.push(glow);
                     });
 
-                    sphere.position.x = 2;
-                    wireframeSphere.position.x = 2;
-                    markers.position.x = 2;
-
-                    camera.position.z = 8;
+                    globeGroup.position.x = window.innerWidth < 768 ? 0 : 2;
+                    camera.position.z = window.innerWidth < 768 ? 10 : 8;
 
                     const raycaster = new THREE.Raycaster();
                     const mouse = new THREE.Vector2(-10, -10);
+                    
                     let isHoveringGlobe = false;
+                    let isDraggingGlobe = false;
+                    let dragStartPos = { x: 0, y: 0 };
+                    let previousMousePos = { x: 0, y: 0 };
+                    let hasDragged = false;
 
                     const getCanvasMousePos = (clientX, clientY) => {
                         const rect = renderer.domElement.getBoundingClientRect();
@@ -1321,13 +1336,40 @@
                         };
                     };
 
+                    const onMouseDown = (event) => {
+                        isDraggingGlobe = true;
+                        hasDragged = false;
+                        dragStartPos = { x: event.clientX, y: event.clientY };
+                        previousMousePos = { x: event.clientX, y: event.clientY };
+                    };
+
                     const onMouseMove = (event) => {
                         const pos = getCanvasMousePos(event.clientX, event.clientY);
                         mouse.x = pos.x;
                         mouse.y = pos.y;
+                        
+                        if (isDraggingGlobe) {
+                            const deltaX = event.clientX - previousMousePos.x;
+                            const deltaY = event.clientY - previousMousePos.y;
+                            
+                            globeGroup.rotation.y += deltaX * 0.005;
+                            globeGroup.rotation.x += deltaY * 0.005;
+                            
+                            previousMousePos = { x: event.clientX, y: event.clientY };
+                            
+                            if (Math.abs(event.clientX - dragStartPos.x) > 5 || Math.abs(event.clientY - dragStartPos.y) > 5) {
+                                hasDragged = true;
+                            }
+                        }
+                    };
+
+                    const onMouseUp = () => {
+                        isDraggingGlobe = false;
                     };
 
                     const onClick = (event) => {
+                        if (hasDragged) return; 
+                        
                         const pos = getCanvasMousePos(event.clientX, event.clientY);
                         mouse.x = pos.x;
                         mouse.y = pos.y;
@@ -1345,34 +1387,74 @@
 
                     const onTouchStart = (event) => {
                         if (event.touches.length > 0) {
-                            const pos = getCanvasMousePos(event.touches[0].clientX, event.touches[0].clientY);
+                            isDraggingGlobe = true;
+                            hasDragged = false;
+                            const t = event.touches[0];
+                            dragStartPos = { x: t.clientX, y: t.clientY };
+                            previousMousePos = { x: t.clientX, y: t.clientY };
+                            
+                            const pos = getCanvasMousePos(t.clientX, t.clientY);
                             mouse.x = pos.x;
                             mouse.y = pos.y;
+                        }
+                    };
+                    
+                    const onTouchMove = (event) => {
+                        if (isDraggingGlobe && event.touches.length > 0) {
+                            const t = event.touches[0];
+                            const deltaX = t.clientX - previousMousePos.x;
+                            const deltaY = t.clientY - previousMousePos.y;
                             
-                            isHoveringGlobe = true;
-
+                            globeGroup.rotation.y += deltaX * 0.005;
+                            globeGroup.rotation.x += deltaY * 0.005;
+                            
+                            previousMousePos = { x: t.clientX, y: t.clientY };
+                            
+                            if (Math.abs(t.clientX - dragStartPos.x) > 5 || Math.abs(t.clientY - dragStartPos.y) > 5) {
+                                hasDragged = true;
+                            }
+                            
+                            raycaster.setFromCamera(mouse, camera);
+                            const intersects = raycaster.intersectObjects([sphere]);
+                            if(intersects.length > 0) {
+                                event.preventDefault();
+                            }
+                            
+                            const pos = getCanvasMousePos(t.clientX, t.clientY);
+                            mouse.x = pos.x;
+                            mouse.y = pos.y;
+                        }
+                    };
+                    
+                    const onTouchEnd = () => {
+                        isDraggingGlobe = false;
+                        
+                        if (!hasDragged) {
                             raycaster.setFromCamera(mouse, camera);
                             const intersectsNodes = raycaster.intersectObjects(markerObjects);
-                            
                             if (intersectsNodes.length > 0) {
                                 const proj = intersectsNodes[0].object.parent.userData.proj;
                                 if(window.openModal && proj) window.openModal(proj);
                             }
                         }
-                    };
-                    
-                    const onTouchEnd = () => {
-                        isHoveringGlobe = false;
-                        mouse.x = -10; mouse.y = -10;
+                        
+                        mouse.x = -10; 
+                        mouse.y = -10;
+                        hasDragged = false;
                     };
 
+                    renderer.domElement.addEventListener('mousedown', onMouseDown);
                     renderer.domElement.addEventListener('mousemove', onMouseMove);
+                    renderer.domElement.addEventListener('mouseup', onMouseUp);
                     renderer.domElement.addEventListener('click', onClick);
+                    
                     renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: true });
+                    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: false }); 
                     renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: true });
                     renderer.domElement.addEventListener('touchcancel', onTouchEnd, { passive: true });
                     
                     renderer.domElement.addEventListener('mouseleave', () => {
+                        isDraggingGlobe = false;
                         mouse.x = -10;
                         mouse.y = -10;
                     });
@@ -1383,17 +1465,11 @@
                         raycaster.setFromCamera(mouse, camera);
                         
                         const intersectsGlobeAll = raycaster.intersectObjects([sphere, wireframeSphere, ...markerObjects]);
+                        isHoveringGlobe = intersectsGlobeAll.length > 0;
                         
-                        if (intersectsGlobeAll.length > 0) {
-                            isHoveringGlobe = true;
-                        } else {
-                            isHoveringGlobe = false;
-                        }
-                        
-                        if (!isHoveringGlobe) {
-                            sphere.rotation.y += 0.0008;
-                            wireframeSphere.rotation.y += 0.0008;
-                            markers.rotation.y += 0.0008;
+                        if (!isHoveringGlobe && !isDraggingGlobe) {
+                            globeGroup.rotation.y += 0.0008;
+                            globeGroup.rotation.x += (0 - globeGroup.rotation.x) * 0.02;
                         }
                         
                         const intersectsNodes = raycaster.intersectObjects(markerObjects);
@@ -1402,6 +1478,10 @@
                         if (intersectsNodes.length > 0) {
                             renderer.domElement.style.cursor = 'pointer';
                             intersectsNodes[0].object.parent.scale.set(1.5, 1.5, 1.5);
+                        } else if (isDraggingGlobe) {
+                            renderer.domElement.style.cursor = 'grabbing';
+                        } else if (isHoveringGlobe) {
+                            renderer.domElement.style.cursor = 'grab';
                         } else {
                             renderer.domElement.style.cursor = 'none'; 
                         }
@@ -1432,10 +1512,10 @@
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         
                         if(window.innerWidth < 768) {
-                            sphere.position.x = 0; wireframeSphere.position.x = 0; markers.position.x = 0;
+                            globeGroup.position.x = 0;
                             camera.position.z = 10;
                         } else {
-                            sphere.position.x = 2; wireframeSphere.position.x = 2; markers.position.x = 2;
+                            globeGroup.position.x = 2;
                             camera.position.z = 8;
                         }
                     });
