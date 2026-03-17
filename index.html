@@ -12,6 +12,7 @@
     
     <style>
         :root {
+            /* Dark Theme Variables (Default) */
             --bg-color: #030305;
             --bg-color-alt: #0a0a0f;
             --text-main: #ffffff;
@@ -20,8 +21,22 @@
             --accent-purple: #7000ff;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.05);
+            --nav-bg: rgba(3, 3, 5, 0.8);
             --font-ui: 'Inter', sans-serif;
             --font-head: 'Poppins', sans-serif;
+        }
+
+        body.light-mode {
+            /* Light Theme Variables */
+            --bg-color: #f8fafc;
+            --bg-color-alt: #f1f5f9;
+            --text-main: #020617;
+            --text-muted: #475569;
+            --accent-cyan: #0ea5e9; 
+            --accent-purple: #7c3aed;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(248, 250, 252, 0.8);
         }
 
         * {
@@ -37,6 +52,7 @@
             font-family: var(--font-ui);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -49,7 +65,7 @@
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
 
         /* Custom Cursor */
@@ -89,12 +105,13 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            transition: background 0.4s ease, border 0.4s ease, transform 0.3s ease;
         }
 
         .gradient-text {
-            color: #ffffff;
-            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+            color: var(--text-main);
+            background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -128,9 +145,9 @@
         }
         .btn-primary:hover::before { opacity: 1; }
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #ffffff;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
         }
         .btn-secondary:hover { border-color: var(--accent-cyan); background: rgba(0,240,255,0.1); }
 
@@ -140,22 +157,30 @@
             padding: 1.5rem 5%;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 100;
-            transition: background 0.3s;
+            transition: background 0.3s, border 0.3s;
         }
         nav.scrolled {
-            background: rgba(3, 3, 5, 0.8);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--glass-border);
+        }
+        .nav-right {
+            display: flex; align-items: center; gap: 2rem;
         }
         .logo { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; letter-spacing: -1px; }
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent-cyan); }
+        .theme-toggle-btn {
+            background: none; border: none; color: var(--text-main); display: flex; align-items: center; justify-content: center;
+            padding: 0.5rem; border-radius: 50%; transition: color 0.3s, background 0.3s;
+        }
+        .theme-toggle-btn:hover { color: var(--accent-cyan); background: var(--glass-bg); }
 
         /* Section Settings */
         section { padding: 8rem 5%; position: relative; }
         .section-title {
-            font-size: 3rem; margin-bottom: 3rem; text-align: center;
+            font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 3rem; text-align: center;
             text-transform: uppercase; letter-spacing: 2px;
         }
 
@@ -169,6 +194,7 @@
             padding: 0 5%; 
             overflow: hidden;
             background-color: var(--bg-color);
+            transition: background-color 0.4s ease;
         }
 
         /* Interactive Canvas Layer */
@@ -205,7 +231,7 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
             animation: floatSpace 15s linear infinite;
         }
         .shape-1 { width: 120px; height: 120px; top: 15%; left: 10%; animation-delay: 0s; box-shadow: 0 0 30px rgba(0, 240, 255, 0.1); }
@@ -232,9 +258,9 @@
             padding: 0.5rem 1rem;
             margin-bottom: 2rem;
             font-size: 0.9rem; font-weight: 500;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 50px;
@@ -256,7 +282,7 @@
         }
 
         .hero-subtitle-wrapper {
-            font-size: 1.2rem; color: var(--accent-cyan); letter-spacing: 3px;
+            font-size: clamp(1rem, 2vw, 1.2rem); color: var(--accent-cyan); letter-spacing: 3px;
             text-transform: uppercase; margin-bottom: 1rem; display: flex; 
             justify-content: center; align-items: center; height: 30px;
         }
@@ -268,15 +294,15 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .hero-title {
-            font-size: clamp(3.5rem, 8vw, 7.5rem); 
+            font-size: clamp(2.5rem, 8vw, 7.5rem); 
             line-height: 1.1; margin-bottom: 1rem;
             letter-spacing: -2px; font-weight: 800;
-            color: #ffffff;
-            text-shadow: 0 0 40px rgba(0, 240, 255, 0.25);
+            color: var(--text-main);
+            text-shadow: 0 0 40px rgba(0, 240, 255, 0.15);
         }
         
         .hero-title .gradient-text-accent {
-            background: linear-gradient(135deg, #00f0ff 0%, #7000ff 50%, #00f0ff 100%);
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-cyan) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
@@ -288,8 +314,8 @@
             100% { background-position: 200% center; }
         }
 
-        .hero-desc { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 3rem; max-width: 650px; line-height: 1.6; }
-        .hero-btns { display: flex; gap: 1.5rem; justify-content: center; }
+        .hero-desc { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--text-muted); margin-bottom: 3rem; max-width: 650px; line-height: 1.6; }
+        .hero-btns { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
 
         /* Scroll Indicator */
         .scroll-indicator {
@@ -299,7 +325,7 @@
             z-index: 10;
         }
         .mouse-icon {
-            width: 26px; height: 40px; border: 2px solid rgba(255,255,255,0.3); border-radius: 13px;
+            width: 26px; height: 40px; border: 2px solid var(--text-muted); border-radius: 13px;
             position: relative; display: flex; justify-content: center;
         }
         .wheel {
@@ -313,15 +339,14 @@
 
         /* About Section */
         .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem; margin-top: 4rem;
         }
         .stat-card {
             padding: 3rem 2rem; text-align: center;
-            transition: transform 0.3s;
         }
         .stat-card:hover { transform: translateY(-10px); border-color: var(--accent-cyan); }
-        .stat-num { font-size: 3.5rem; font-weight: 700; font-family: var(--font-head); margin-bottom: 1rem; color: var(--accent-cyan); }
+        .stat-num { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 700; font-family: var(--font-head); margin-bottom: 1rem; color: var(--accent-cyan); }
         .stat-text { font-size: 1.1rem; color: var(--text-muted); }
 
         /* Skills Galaxy */
@@ -335,6 +360,7 @@
         .galaxy-center {
             width: 120px; height: 120px; border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-family: var(--font-head); font-weight: 700; font-size: 1.5rem;
             box-shadow: 0 0 50px rgba(0, 240, 255, 0.4);
@@ -342,7 +368,7 @@
         }
         .orbit {
             position: absolute; top: 50%; left: 50%;
-            border: 1px dashed rgba(255,255,255,0.1);
+            border: 1px dashed var(--glass-border);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             animation: rotateOrbit linear infinite;
@@ -353,11 +379,12 @@
             position: absolute; top: 0; left: 50%;
             transform: translate(-50%, -50%);
             padding: 0.8rem 1.5rem; border-radius: 20px;
-            background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
             font-weight: 500; font-size: 0.9rem;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
             transition: all 0.3s;
+            color: var(--text-main);
         }
         .tech-node:hover {
             background: rgba(0, 240, 255, 0.1); border-color: var(--accent-cyan);
@@ -386,11 +413,11 @@
             object-fit: cover;
             z-index: 0;
             filter: brightness(0.4);
-            background-color: #1a1a2e; 
+            background-color: #1a1a2e; /* Fallback */
         }
         .featured-content { position: relative; z-index: 1; max-width: 600px; }
-        .tags { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;}
-        .tag { padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
+        .tags { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;}
+        .tag { padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; background: var(--glass-bg); backdrop-filter: blur(5px); border: 1px solid var(--glass-border); color: #fff; }
 
         /* 3D Project Carousel */
         #projects { overflow: hidden; }
@@ -398,35 +425,36 @@
             position: relative; width: 100%; height: 500px;
             display: flex; align-items: center; justify-content: center;
             perspective: 1200px; margin-top: 3rem;
+            user-select: none; 
+            touch-action: pan-y; 
         }
         .carousel-card {
             position: absolute; width: 350px; height: 450px;
             border-radius: 20px; overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #111;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s, z-index 0.5s;
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
         }
         .carousel-card img { 
             width: 100%; height: 60%; object-fit: cover; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            border-bottom: 1px solid var(--glass-border); 
             transition: transform 0.5s; 
-            background-color: #1a1a2e; 
+            background-color: #1a1a2e;
+            pointer-events: none; 
         }
         .carousel-card:hover img { transform: scale(1.05); }
         .card-info { padding: 1.5rem; height: 40%; display: flex; flex-direction: column; justify-content: space-between; }
-        .card-info h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .card-info h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-main); }
         .card-info p { font-size: 0.9rem; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
         .carousel-controls { display: flex; justify-content: center; gap: 2rem; margin-top: 3rem; }
-        .ctrl-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
-        .ctrl-btn:hover { background: var(--accent-cyan); color: #000; }
+        .ctrl-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-main); display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .ctrl-btn:hover { background: var(--accent-cyan); color: #fff; border-color: var(--accent-cyan); }
 
         /* Earth Navigator */
         #earth-section { height: 100vh; position: relative; display: flex; align-items: center; }
         #earth-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
         .earth-overlay { position: relative; z-index: 1; pointer-events: none; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-        .earth-title { font-size: 3rem; margin-bottom: 1rem; max-width: 500px; pointer-events: auto; }
+        .earth-title { font-size: clamp(2.5rem, 5vw, 3rem); margin-bottom: 1rem; max-width: 500px; pointer-events: auto; }
         .earth-subtitle { color: var(--text-muted); max-width: 400px; pointer-events: auto; }
 
         /* Timeline */
@@ -434,7 +462,7 @@
         .timeline::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background: linear-gradient(to bottom, transparent, var(--accent-cyan), var(--accent-purple), transparent); }
         .timeline-item { display: flex; justify-content: flex-end; padding-right: 50%; position: relative; margin-bottom: 4rem; width: 100%; }
         .timeline-item:nth-child(even) { justify-content: flex-start; padding-right: 0; padding-left: 50%; }
-        .timeline-content { width: 80%; padding: 2rem; position: relative; }
+        .timeline-content { width: 85%; padding: 2rem; position: relative; }
         .timeline-item:nth-child(odd) .timeline-content { text-align: right; margin-left: auto; }
         .timeline-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: var(--bg-color); border: 4px solid var(--accent-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--accent-cyan); z-index: 2; }
         .time-date { color: var(--accent-cyan); font-weight: 600; margin-bottom: 0.5rem; display: block; }
@@ -445,20 +473,20 @@
             display: flex; flex-direction: column; gap: 1.5rem; align-items: center; justify-content: center;
         }
         .contact-link-btn {
-            min-width: 280px; display: flex; gap: 12px; font-size: 1.1rem; justify-content: center;
+            min-width: 280px; width: auto; display: flex; gap: 12px; font-size: 1.1rem; justify-content: center;
         }
         .btn-whatsapp {
-            border-color: #25D366; color: #25D366;
+            border-color: #25D366; color: #25D366 !important; 
         }
         .btn-whatsapp:hover {
-            background: rgba(37, 211, 102, 0.1); border-color: #25D366;
+            background: rgba(37, 211, 102, 0.1); border-color: #25D366; color: #25D366 !important;
         }
 
         /* Footer */
-        footer { padding: 4rem 5%; border-top: 1px solid var(--glass-border); text-align: center; background: #010102;}
+        footer { padding: 4rem 5%; border-top: 1px solid var(--glass-border); text-align: center; background: var(--bg-color-alt); transition: background 0.4s ease;}
         .social-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; }
-        .social-links a { width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); display: flex; align-items: center; justify-content: center; transition: all 0.3s; border: 1px solid var(--glass-border); }
-        .social-links a:hover { background: var(--accent-cyan); color: #000; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,240,255,0.2); }
+        .social-links a { width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); color: var(--text-main); display: flex; align-items: center; justify-content: center; transition: all 0.3s; border: 1px solid var(--glass-border); }
+        .social-links a:hover { background: var(--accent-cyan); color: #fff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,240,255,0.2); border-color: var(--accent-cyan); }
 
         /* Modal */
         .modal-overlay {
@@ -471,27 +499,42 @@
         .modal-content {
             width: 90%; max-width: 900px; max-height: 90vh; overflow-y: auto;
             position: relative; transform: scale(0.9); transition: transform 0.4s ease;
-            padding: 3rem;
+            padding: 3rem; background: var(--bg-color-alt); border: 1px solid var(--glass-border); border-radius: 24px;
         }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .close-modal { position: absolute; top: 1.5rem; right: 1.5rem; background: transparent; border: none; color: #fff; z-index: 10; padding: 0.5rem; }
-        .modal-img { width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.1); background-color: #1a1a2e; }
-        .modal-body h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .close-modal { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 50%; color: var(--text-main); z-index: 10; padding: 0.5rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .close-modal:hover { background: var(--accent-cyan); color: #fff; border-color: var(--accent-cyan); }
+        .modal-img { width: 100%; height: 350px; object-fit: cover; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--glass-border); background-color: #1a1a2e; }
+        .modal-body h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 1rem; color: var(--text-main); }
         .modal-body p { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero-title { font-size: 3rem; }
-            .hero-content { padding: 3rem 1.5rem; border-radius: 30px; }
+            section { padding: 6rem 5%; }
             .nav-links { display: none; }
-            .galaxy-container { transform: scale(0.6); }
+            .nav-right { gap: 1rem; }
+            
+            .hero-content { padding: 2rem 1rem; }
+            .hero-btns { flex-direction: column; width: 100%; }
+            .hero-btns .magnetic-btn { width: 100%; }
+            
+            .galaxy-container { transform: scale(0.6); margin: -4rem 0; }
+            
             .carousel-card { width: 280px; height: 400px; }
-            .featured-wrapper { padding: 2rem; height: 60vh; }
+            .featured-wrapper { padding: 2rem; height: auto; min-height: 60vh; }
+            .featured-content h2 { font-size: 2.5rem !important; }
+            
             .timeline::before { left: 30px; }
             .timeline-item { padding-right: 0 !important; padding-left: 70px !important; justify-content: flex-start !important; }
             .timeline-item:nth-child(odd) .timeline-content { text-align: left; margin-left: 0; }
+            .timeline-content { width: 100%; padding: 1.5rem; }
             .timeline-dot { left: 30px; }
-            .contact-link-btn { min-width: 100%; width: 100%; }
+            
+            .contact-container { padding: 2rem !important; }
+            .contact-link-btn { width: 100%; min-width: unset; }
+            
+            .modal-content { padding: 1.5rem; }
+            .modal-img { height: 200px; }
         }
     </style>
 </head>
@@ -504,27 +547,36 @@
     <!-- Navigation -->
     <nav id="navbar">
         <a href="#" class="logo gradient-text-accent interactable">AT.</a>
-        <div class="nav-links">
-            <a href="#about" class="interactable">About</a>
-            <a href="#projects" class="interactable">Work</a>
-            <a href="#earth-section" class="interactable">Globe</a>
-            <a href="#contact" class="interactable">Contact</a>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#about" class="interactable">About</a>
+                <a href="#projects" class="interactable">Work</a>
+                <a href="#earth-section" class="interactable">Globe</a>
+                <a href="#contact" class="interactable">Contact</a>
+            </div>
+            <!-- Theme Toggle Button -->
+            <button id="theme-toggle" class="theme-toggle-btn interactable" aria-label="Toggle Theme">
+                <i data-lucide="sun"></i>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="hero">
-       
+        <!-- Interactive Particle Network -->
         <canvas id="hero-canvas"></canvas>
         
+        <!-- Glowing Ambient Core -->
         <div class="hero-core"></div>
-
+        
+        <!-- Floating Glass Shapes -->
         <div class="floating-shape shape-1"></div>
         <div class="floating-shape shape-2"></div>
         <div class="floating-shape shape-3"></div>
 
         <div class="hero-content">
-        
+            
+            <!-- Sleek Availability Badge -->
             <div class="availability-badge">
                 <span class="pulse-dot"></span> Available for New Projects
             </div>
@@ -577,17 +629,16 @@
             <div class="galaxy-center">Aryan</div>
             
             <div class="orbit orbit-1">
-                <div class="tech-node node-1">HTML5</div>
-                <div class="tech-node node-2">CSS3</div>
-                <div class="tech-node node-3">JavaScript</div>
-                <div class="tech-node node-4">React</div>
+                <div class="tech-node node-1">HTML</div>
+                <div class="tech-node node-2">CSS</div>
+                <div class="tech-node node-3">JS</div>
+                <div class="tech-node node-4">Tailwind</div>
             </div>
             
             <div class="orbit orbit-2">
-                <div class="tech-node node-1">Flutter Web</div>
+                <div class="tech-node node-1">WebGL</div>
                 <div class="tech-node node-2">Firebase</div>
-                <div class="tech-node node-3">GitHub</div>
-              
+                <div class="tech-node node-3">GSAP</div>
             </div>
         </div>
     </section>
@@ -595,18 +646,18 @@
     <!-- Featured Project -->
     <section id="featured">
         <div class="featured-wrapper interactable" id="featured-parallax">
-        
+            
             <img src="pilot.png" alt="Pilots Quest" class="featured-bg-img" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop'">
             
             <div class="featured-content fade-up">
                 <div class="tags">
-                    <span class="tag">Html</span>
-                    <span class="tag">Css</span>
-                    <span class="tag">Three.js</span>
+                    <span class="tag">HTML</span>
                     <span class="tag">Tailwind</span>
+                    <span class="tag">WebGL</span>
+                    <span class="tag">JS</span>
                 </div>
-                <h2 style="font-size: 3.5rem; margin-bottom: 1rem;">Pilots Quest</h2>
-                <p style="font-size: 1.1rem; color: #ddd; margin-bottom: 2rem;">A revolutionary aviation platform combining interactive 3D elements with real-time flight tracking interfaces.</p>
+                <h2 style="font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 1rem; color: #fff;">Pilots Quest</h2>
+                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); margin-bottom: 2rem;">A revolutionary aviation platform combining interactive 3D elements with dynamic data visualization.</p>
                 <a href="https://pilotsquest.com/" target="_blank" class="magnetic-btn btn-primary interactable">Visit Website</a>
             </div>
         </div>
@@ -631,7 +682,7 @@
         <canvas id="earth-canvas"></canvas>
         <div class="earth-overlay fade-up" style="padding: 0 5%;">
             <h2 class="earth-title gradient-text">Global <span class="gradient-text-accent">Impact</span></h2>
-            <p class="earth-subtitle">Explore my deployed applications around the globe. Click on the glowing nodes to view project details.</p>
+            <p class="earth-subtitle">Explore my deployed applications around the globe. Hover or touch the glowing nodes to view project details.</p>
         </div>
     </section>
 
@@ -643,7 +694,7 @@
                 <div class="timeline-dot"></div>
                 <div class="timeline-content glass-card">
                     <span class="time-date">2023 - Present</span>
-                    <h3>Senior Frontend Architect</h3>
+                    <h3 style="color: var(--text-main);">Senior Frontend Architect</h3>
                     <p style="color: var(--text-muted); margin-top: 0.5rem;">Leading development of scalable applications including Dairy Go and WhizzMart. Implementing advanced WebGL experiences.</p>
                 </div>
             </div>
@@ -651,15 +702,15 @@
                 <div class="timeline-dot"></div>
                 <div class="timeline-content glass-card">
                     <span class="time-date">2021 - 2023</span>
-                    <h3>Full Stack Freelancer</h3>
-                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Delivered 10+ end-to-end projects like Kaaj Tech and ThinkTrack using modern JS frameworks and Firebase.</p>
+                    <h3 style="color: var(--text-main);">Full Stack Freelancer</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Delivered 10+ end-to-end projects like Kaaj Tech and ThinkTrack utilizing HTML, CSS, JS, and Firebase structures.</p>
                 </div>
             </div>
             <div class="timeline-item fade-up">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content glass-card">
                     <span class="time-date">2020</span>
-                    <h3>The Beginning</h3>
+                    <h3 style="color: var(--text-main);">The Beginning</h3>
                     <p style="color: var(--text-muted); margin-top: 0.5rem;">Started the journey with core HTML, CSS, and JS. Built foundation in UI/UX principles and responsive design.</p>
                 </div>
             </div>
@@ -669,21 +720,18 @@
     <!-- Contact -->
     <section id="contact">
         <div class="contact-container glass-card fade-up" style="padding: 4rem;">
-            <h2 class="section-title" style="margin-bottom: 1rem; font-size: 2.5rem;">Let's <span class="gradient-text-accent">Connect</span></h2>
+            <h2 class="section-title" style="margin-bottom: 1rem;">Let's <span class="gradient-text-accent">Connect</span></h2>
             <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Ready to build something extraordinary? Reach out to me directly.</p>
             
             <div class="contact-links">
-               
                 <a href="tel:+919053195505" class="magnetic-btn btn-primary contact-link-btn interactable">
                     <i data-lucide="phone"></i> +91 9053195505
                 </a>
                 
-          
                 <a href="https://wa.me/919053195505" target="_blank" class="magnetic-btn btn-secondary btn-whatsapp contact-link-btn interactable">
                     <i data-lucide="message-circle"></i> Chat on WhatsApp
                 </a>
                 
-            
                 <a href="mailto:tyagiaryan332@gmail.com" class="magnetic-btn btn-secondary contact-link-btn interactable">
                     <i data-lucide="mail"></i> tyagiaryan332@gmail.com
                 </a>
@@ -696,15 +744,14 @@
         <div class="social-links">
             <a href="https://github.com/aryan4502" class="interactable"><i data-lucide="github"></i></a>       
             <a href="mailto:tyagiaryan332@gmail.com" class="interactable"><i data-lucide="mail"></i></a>
-          
         </div>
         <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 Aryan Tyagi. All rights reserved.</p>
     </footer>
 
     <!-- Project Modal -->
     <div class="modal-overlay" id="project-modal">
-        <div class="modal-content glass-card">
-            <button class="close-modal interactable" id="close-modal"><i data-lucide="x" style="width: 32px; height: 32px;"></i></button>
+        <div class="modal-content">
+            <button class="close-modal interactable" id="close-modal"><i data-lucide="x" style="width: 24px; height: 24px;"></i></button>
             <img src="" alt="Project" class="modal-img" id="modal-img">
             <div class="modal-body">
                 <div class="tags" id="modal-tags"></div>
@@ -715,6 +762,7 @@
         </div>
     </div>
 
+ 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
@@ -723,7 +771,6 @@
     <script src="https://unpkg.com/lucide@latest" defer></script>
 
     <script>
-  
         document.addEventListener("DOMContentLoaded", () => {
             
             try {
@@ -733,17 +780,31 @@
                 }
             } catch(e) { console.error("Lucide Error:", e); }
 
+            // Theme Toggle Logic
+            const themeBtn = document.getElementById('theme-toggle');
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const icon = themeBtn.querySelector('i');
+                if(document.body.classList.contains('light-mode')) {
+                    icon.setAttribute('data-lucide', 'moon');
+                } else {
+                    icon.setAttribute('data-lucide', 'sun');
+                }
+                if (window.lucide) lucide.createIcons(); 
+            });
+
+     
             const projectsData = [
-                { id: 1, title: 'Pilots Quest', url: 'https://pilotsquest.com/', desc: 'Interactive aviation platform with advanced 3D elements and real-time data visualization.', img: 'pilot1.png', tags: ['React', 'Three.js', 'Node'] },
-                { id: 2, title: 'Kaaj Tech', url: 'https://kaajtech.in/', desc: 'Modern corporate portal featuring smooth transitions and dynamic CMS integration.', img: 'kaaj.png', tags: ['Next.js', 'Tailwind', 'Sanity'] },
-                { id: 3, title: 'Dairy Go', url: 'https://dairygo.in/', desc: 'E-commerce platform for fresh dairy products with real-time delivery tracking.', img: 'dairy.png', tags: ['Flutter Web', 'Firebase', 'Stripe'] },
-                { id: 4, title: 'Mewe Entertainment', url: 'https://meweentertainment.com/', desc: 'Cinematic streaming portal with heavy focus on video performance and UI.', img: 'mewe.png', tags: ['Vue.js', 'AWS', 'GSAP'] },
-                { id: 5, title: 'ThinkTrack', url: 'https://thinktrack.app/', desc: 'Productivity application with intuitive drag-and-drop boards and analytics.', img: 'think.png', tags: ['React', 'Redux', 'Express'] },
-                { id: 6, title: 'ViuLift', url: 'https://viulift.com/', desc: 'Fitness and health tracking dashboard with interactive charting.', img: 'viulift.png', tags: ['Angular', 'D3.js', 'Firebase'] },
-                { id: 7, title: 'WhizzMart', url: 'https://whizzmart.org/', desc: 'Large scale multi-vendor marketplace with complex state management.', img: 'whizzmart.png', tags: ['Next.js', 'GraphQL', 'PostgreSQL'] },
-                { id: 8, title: 'MomKopter', url: 'https://momkopter.com/', desc: 'Parenting community platform featuring forums, blogs, and real-time chat.', img: 'momkopter.png', tags: ['React', 'Socket.io', 'MongoDB'] },
-                { id: 9, title: 'Invoicer', url: 'https://invoicer.dkps.in/', desc: 'Financial SaaS tool for generating and managing professional invoices.', img: 'invoicer.png', tags: ['Vue.js', 'Laravel', 'MySQL'] },
-                { id: 10, title: 'Shishu Dhanam', url: 'https://shishudhanam.com/', desc: 'Educational resource platform with gamified learning paths for children.', img: 'shishudhanam.png', tags: ['HTML5 Canvas', 'JS', 'Firebase'] }
+                { id: 1, title: 'Pilots Quest', url: 'https://pilotsquest.com/', desc: 'Interactive aviation platform with advanced 3D elements and smooth data visualization.', img: 'pilot1.png', tags: ['HTML', 'JS', 'WebGL', 'Tailwind'] },
+                { id: 2, title: 'Kaaj Tech', url: 'https://kaajtech.in/', desc: 'Modern corporate portal featuring smooth transitions and semantic structural integration.', img: 'kaaj.png', tags: ['HTML', 'CSS', 'JS', 'Tailwind'] },
+                { id: 3, title: 'Dairy Go', url: 'https://dairygo.in/', desc: 'E-commerce platform for fresh dairy products with real-time tracking systems.', img: 'dairy.png', tags: ['HTML', 'Tailwind', 'JS', 'Firebase'] },
+                { id: 4, title: 'Mewe Entertainment', url: 'https://meweentertainment.com/', desc: 'Cinematic streaming portal with heavy focus on performance and interactive UI elements.', img: 'mewe.png', tags: ['HTML', 'Tailwind', 'GSAP', 'JS'] },
+                { id: 5, title: 'ThinkTrack', url: 'https://thinktrack.app/', desc: 'Productivity application with intuitive drag-and-drop boards and analytics interfaces.', img: 'think.png', tags: ['HTML', 'CSS', 'JS', 'Firebase'] },
+                { id: 6, title: 'ViuLift', url: 'https://viulift.com/', desc: 'Fitness and health tracking dashboard dynamically processing physical data metrics.', img: 'viulift.png', tags: ['HTML', 'Tailwind', 'JS', 'Firebase'] },
+                { id: 7, title: 'WhizzMart', url: 'https://whizzmart.org/', desc: 'Large scale multi-vendor marketplace with fluid interactive state management systems.', img: 'whizzmart.png', tags: ['HTML', 'Tailwind', 'JS', 'GSAP'] },
+                { id: 8, title: 'MomKopter', url: 'https://momkopter.com/', desc: 'Community platform featuring forums, interactive boards, and real-time syncing.', img: 'momkopter.png', tags: ['HTML', 'CSS', 'JS', 'Firebase'] },
+                { id: 9, title: 'Invoicer', url: 'https://invoicer.dkps.in/', desc: 'Financial tool for generating and managing professional responsive invoices.', img: 'invoicer.png', tags: ['HTML', 'Tailwind', 'JS'] },
+                { id: 10, title: 'Shishu Dhanam', url: 'https://shishudhanam.com/', desc: 'Educational resource platform with interactive learning paths for children.', img: 'shishudhanam.png', tags: ['HTML', 'CSS', 'JS', 'WebGL'] }
             ];
 
             // Typing Effect Logic
@@ -779,9 +840,9 @@
                 setTimeout(typeEffect, typeSpeed);
             }
 
-       
             typeEffect();
 
+            // Hero Particle Canvas
             try {
                 const canvas = document.getElementById('hero-canvas');
                 if (canvas) {
@@ -830,7 +891,6 @@
                             if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
                             if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
-                          
                             let dx = mouse.x - this.x; let dy = mouse.y - this.y;
                             let distance = Math.sqrt(dx * dx + dy * dy);
                             if (distance < mouse.radius + this.size) {
@@ -880,7 +940,7 @@
                 }
             } catch(e) { console.error("Hero Particles Error:", e); }
 
-           
+            // Smooth Scrolling Setup
             let lenis;
             try {
                 if (typeof Lenis !== 'undefined') {
@@ -890,12 +950,11 @@
                 }
             } catch(e) { console.error("Lenis Error:", e); }
             
-           
+            // GSAP Animations Setup
             try {
                 if (window.gsap && window.ScrollTrigger) {
                     gsap.registerPlugin(ScrollTrigger);
                     
-                   
                     gsap.utils.toArray('.fade-up').forEach(element => {
                         gsap.from(element, {
                             scrollTrigger: { trigger: element, start: "top 85%" },
@@ -919,13 +978,13 @@
                     window.addEventListener('mousemove', (e) => {
                         const posX = e.clientX; const posY = e.clientY;
                         cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
-                     
+                       
                         if(cursorOutline.animate) {
                             cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
                         }
                     });
 
-              
+                 
                     document.querySelectorAll('.interactable, a, button').forEach(el => {
                         el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
                         el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -959,7 +1018,7 @@
                 }
             });
 
-            // 3D Carousel Logic 
+           
             try {
                 const carouselContainer = document.getElementById('carousel');
                 let currentCarouselIdx = 0;
@@ -977,7 +1036,15 @@
                         </div>
                     `;
                     
-                    card.addEventListener('click', () => openModal(proj));
+                  
+                    card.addEventListener('click', (e) => {
+                        if(isSwipingCarousel) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        } else {
+                            openModal(proj);
+                        }
+                    });
                     if(carouselContainer) carouselContainer.appendChild(card);
                 });
 
@@ -987,8 +1054,7 @@
                     cards.forEach((card, i) => {
                         const offset = i - currentCarouselIdx;
                         const absOffset = Math.abs(offset);
-                        
-                        // Calculate 3D transforms
+                 
                         const translateZ = -absOffset * 150;
                         const translateX = offset * 250;
                         const rotateY = offset * -15; 
@@ -1005,6 +1071,54 @@
                     });
                 }
 
+                let dragStartX = 0;
+                let isSwipingCarousel = false;
+
+                // Mouse Drag
+                carouselContainer.addEventListener('mousedown', (e) => {
+                    dragStartX = e.clientX;
+                    isSwipingCarousel = false;
+                });
+                carouselContainer.addEventListener('mousemove', (e) => {
+                    if (e.buttons === 1) { 
+                        const diff = dragStartX - e.clientX;
+                        if (Math.abs(diff) > 10) isSwipingCarousel = true;
+                        
+                        
+                        if (Math.abs(diff) > 50) {
+                            if (diff > 0 && currentCarouselIdx < projectsData.length - 1) {
+                                currentCarouselIdx++;
+                            } else if (diff < 0 && currentCarouselIdx > 0) {
+                                currentCarouselIdx--;
+                            }
+                            updateCarousel();
+                            dragStartX = e.clientX;
+                        }
+                    }
+                });
+
+              
+                carouselContainer.addEventListener('touchstart', (e) => {
+                    dragStartX = e.touches[0].clientX;
+                    isSwipingCarousel = false;
+                }, { passive: true });
+                
+                carouselContainer.addEventListener('touchmove', (e) => {
+                    const diff = dragStartX - e.touches[0].clientX;
+                    if (Math.abs(diff) > 10) isSwipingCarousel = true;
+
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0 && currentCarouselIdx < projectsData.length - 1) {
+                            currentCarouselIdx++;
+                        } else if (diff < 0 && currentCarouselIdx > 0) {
+                            currentCarouselIdx--;
+                        }
+                        updateCarousel();
+                        dragStartX = e.touches[0].clientX;
+                    }
+                }, { passive: true });
+
+
                 const nxtBtn = document.getElementById('next-btn');
                 const prvBtn = document.getElementById('prev-btn');
 
@@ -1019,7 +1133,6 @@
                     }
                 });
                 
-                // Initial setup
                 updateCarousel();
             } catch(e) { console.error("Carousel Error:", e); }
 
@@ -1062,7 +1175,6 @@
                 }
             });
 
-            // Three.js Earth Navigator 
             try {
                 const initEarthScene = () => {
                     if (typeof THREE === 'undefined') {
@@ -1080,6 +1192,7 @@
                     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
                     const geometry = new THREE.SphereGeometry(3, 64, 64);
+                    // Dark theme default globe color
                     const material = new THREE.MeshBasicMaterial({ color: 0x050508 });
                     const sphere = new THREE.Mesh(geometry, material);
                     scene.add(sphere);
@@ -1118,20 +1231,18 @@
                         
                         const pos = calcPosFromLatLonRad(lat, lon, 3.05); 
                         
-                    
                         const markerGroup = new THREE.Group();
                         markerGroup.position.copy(pos);
                         markerGroup.userData = { proj: proj };
 
                         const marker = new THREE.Mesh(markerGeo, markerMat);
-                      
                         const glow = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), markerGlowMat); 
                         
                         markerGroup.add(marker);
                         markerGroup.add(glow);
                         
                         markers.add(markerGroup);
-                     
+                        
                         markerObjects.push(marker);
                         markerObjects.push(glow);
                     });
@@ -1143,9 +1254,9 @@
                     camera.position.z = 8;
 
                     const raycaster = new THREE.Raycaster();
-                    const mouse = new THREE.Vector2();
+                    const mouse = new THREE.Vector2(-10, -10); 
+                    let isHoveringGlobe = false; 
 
-                   
                     const getCanvasMousePos = (clientX, clientY) => {
                         const rect = renderer.domElement.getBoundingClientRect();
                         return {
@@ -1160,18 +1271,16 @@
                         mouse.y = pos.y;
                     };
 
-                
                     const onClick = (event) => {
                         const pos = getCanvasMousePos(event.clientX, event.clientY);
                         mouse.x = pos.x;
                         mouse.y = pos.y;
                         
                         raycaster.setFromCamera(mouse, camera);
-                        const intersects = raycaster.intersectObjects(markerObjects);
+                        const intersectsNodes = raycaster.intersectObjects(markerObjects);
                         
-                        if (intersects.length > 0) {
-                            
-                            const proj = intersects[0].object.parent.userData.proj;
+                        if (intersectsNodes.length > 0) {
+                            const proj = intersectsNodes[0].object.parent.userData.proj;
                             if(window.openModal && proj) {
                                 window.openModal(proj);
                             }
@@ -1184,38 +1293,65 @@
                             mouse.x = pos.x;
                             mouse.y = pos.y;
                             
+                           
+                            isHoveringGlobe = true;
+
                             raycaster.setFromCamera(mouse, camera);
-                            const intersects = raycaster.intersectObjects(markerObjects);
+                            const intersectsNodes = raycaster.intersectObjects(markerObjects);
                             
-                            if (intersects.length > 0) {
-                                const proj = intersects[0].object.parent.userData.proj;
+                            if (intersectsNodes.length > 0) {
+                                const proj = intersectsNodes[0].object.parent.userData.proj;
                                 if(window.openModal && proj) window.openModal(proj);
                             }
                         }
                     };
-
                     
+                    const onTouchEnd = () => {
+                        isHoveringGlobe = false; 
+                        mouse.x = -10; mouse.y = -10; 
+                    };
+
                     renderer.domElement.addEventListener('mousemove', onMouseMove);
                     renderer.domElement.addEventListener('click', onClick);
                     renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: true });
+                    renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: true });
+                    renderer.domElement.addEventListener('touchcancel', onTouchEnd, { passive: true });
+                    
+ 
+                    renderer.domElement.addEventListener('mouseleave', () => {
+                        mouse.x = -10;
+                        mouse.y = -10;
+                    });
 
                     const animate = () => {
                         requestAnimationFrame(animate);
                         
-                        
-                        sphere.rotation.y += 0.0008;
-                        wireframeSphere.rotation.y += 0.0008;
-                        markers.rotation.y += 0.0008;
-                        
                         raycaster.setFromCamera(mouse, camera);
-                        const intersects = raycaster.intersectObjects(markerObjects);
+                        
+                     
+                        const intersectsGlobeAll = raycaster.intersectObjects([sphere, wireframeSphere, ...markerObjects]);
                         
                         
+                        if (intersectsGlobeAll.length > 0) {
+                            isHoveringGlobe = true;
+                        } else {
+                           
+                            isHoveringGlobe = false;
+                        }
+                     
+                        if (!isHoveringGlobe) {
+                            sphere.rotation.y += 0.0008;
+                            wireframeSphere.rotation.y += 0.0008;
+                            markers.rotation.y += 0.0008;
+                        }
+                        
+                      
+                        const intersectsNodes = raycaster.intersectObjects(markerObjects);
                         markerObjects.forEach(m => m.parent.scale.set(1, 1, 1));
                         
-                        if (intersects.length > 0) {
-                            renderer.domElement.style.cursor = 'pointer'; 
-                            intersects[0].object.parent.scale.set(1.5, 1.5, 1.5); 
+                        if (intersectsNodes.length > 0) {
+                            renderer.domElement.style.cursor = 'pointer';
+                            intersectsNodes[0].object.parent.scale.set(1.5, 1.5, 1.5);
                         } else {
                             renderer.domElement.style.cursor = 'none'; 
                         }
@@ -1228,7 +1364,6 @@
                     
                     if(earthSection && window.IntersectionObserver) {
                         const observer = new IntersectionObserver((entries) => {
-                            
                             if(entries[0].isIntersecting && !animationStarted) {
                                 animationStarted = true;
                                 animate();
