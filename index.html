@@ -386,7 +386,7 @@
             object-fit: cover;
             z-index: 0;
             filter: brightness(0.4);
-            background-color: #1a1a2e; /* Fallback */
+            background-color: #1a1a2e; 
         }
         .featured-content { position: relative; z-index: 1; max-width: 600px; }
         .tags { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;}
@@ -411,7 +411,7 @@
             width: 100%; height: 60%; object-fit: cover; 
             border-bottom: 1px solid rgba(255,255,255,0.1); 
             transition: transform 0.5s; 
-            background-color: #1a1a2e; /* Fallback background */
+            background-color: #1a1a2e; 
         }
         .carousel-card:hover img { transform: scale(1.05); }
         .card-info { padding: 1.5rem; height: 40%; display: flex; flex-direction: column; justify-content: space-between; }
@@ -514,20 +514,17 @@
 
     <!-- Hero Section -->
     <section id="hero">
-        <!-- Interactive Particle Network -->
+       
         <canvas id="hero-canvas"></canvas>
         
-        <!-- Glowing Ambient Core -->
         <div class="hero-core"></div>
-        
-        <!-- Floating Glass Shapes -->
+
         <div class="floating-shape shape-1"></div>
         <div class="floating-shape shape-2"></div>
         <div class="floating-shape shape-3"></div>
 
         <div class="hero-content">
-            
-            <!-- Sleek Availability Badge -->
+        
             <div class="availability-badge">
                 <span class="pulse-dot"></span> Available for New Projects
             </div>
@@ -598,7 +595,7 @@
     <!-- Featured Project -->
     <section id="featured">
         <div class="featured-wrapper interactable" id="featured-parallax">
-      
+        
             <img src="pilot.png" alt="Pilots Quest" class="featured-bg-img" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop'">
             
             <div class="featured-content fade-up">
@@ -718,7 +715,6 @@
         </div>
     </div>
 
-    <!-- MOVED ALL EXTERNAL SCRIPTS TO THE BOTTOM TO PREVENT RENDER BLOCKING (BLANK SCREEN FIX) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
@@ -923,13 +919,13 @@
                     window.addEventListener('mousemove', (e) => {
                         const posX = e.clientX; const posY = e.clientY;
                         cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
-                        // Safe animate
+                     
                         if(cursorOutline.animate) {
                             cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
                         }
                     });
 
-                    // Hover Effect on interactive elements
+              
                     document.querySelectorAll('.interactable, a, button').forEach(el => {
                         el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
                         el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -1122,16 +1118,22 @@
                         
                         const pos = calcPosFromLatLonRad(lat, lon, 3.05); 
                         
-                        const marker = new THREE.Mesh(markerGeo, markerMat);
-                        marker.position.copy(pos);
-                        marker.userData = proj; 
+                    
+                        const markerGroup = new THREE.Group();
+                        markerGroup.position.copy(pos);
+                        markerGroup.userData = { proj: proj };
 
-                        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), markerGlowMat);
-                        glow.position.copy(pos);
+                        const marker = new THREE.Mesh(markerGeo, markerMat);
+                      
+                        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), markerGlowMat); 
                         
-                        markers.add(marker);
-                        markers.add(glow);
+                        markerGroup.add(marker);
+                        markerGroup.add(glow);
+                        
+                        markers.add(markerGroup);
+                     
                         markerObjects.push(marker);
+                        markerObjects.push(glow);
                     });
 
                     sphere.position.x = 2;
@@ -1143,49 +1145,92 @@
                     const raycaster = new THREE.Raycaster();
                     const mouse = new THREE.Vector2();
 
-                    const onMouseMove = (event) => {
+                   
+                    const getCanvasMousePos = (clientX, clientY) => {
                         const rect = renderer.domElement.getBoundingClientRect();
-                        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-                        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                        return {
+                            x: ((clientX - rect.left) / rect.width) * 2 - 1,
+                            y: -((clientY - rect.top) / rect.height) * 2 + 1
+                        };
                     };
 
-                    const onClick = () => {
+                    const onMouseMove = (event) => {
+                        const pos = getCanvasMousePos(event.clientX, event.clientY);
+                        mouse.x = pos.x;
+                        mouse.y = pos.y;
+                    };
+
+                
+                    const onClick = (event) => {
+                        const pos = getCanvasMousePos(event.clientX, event.clientY);
+                        mouse.x = pos.x;
+                        mouse.y = pos.y;
+                        
                         raycaster.setFromCamera(mouse, camera);
                         const intersects = raycaster.intersectObjects(markerObjects);
+                        
                         if (intersects.length > 0) {
-                            const proj = intersects[0].object.userData;
-                            if(window.openModal) window.openModal(proj);
+                            
+                            const proj = intersects[0].object.parent.userData.proj;
+                            if(window.openModal && proj) {
+                                window.openModal(proj);
+                            }
                         }
                     };
 
-                    window.addEventListener('mousemove', onMouseMove);
-                    window.addEventListener('click', onClick);
+                    const onTouchStart = (event) => {
+                        if (event.touches.length > 0) {
+                            const pos = getCanvasMousePos(event.touches[0].clientX, event.touches[0].clientY);
+                            mouse.x = pos.x;
+                            mouse.y = pos.y;
+                            
+                            raycaster.setFromCamera(mouse, camera);
+                            const intersects = raycaster.intersectObjects(markerObjects);
+                            
+                            if (intersects.length > 0) {
+                                const proj = intersects[0].object.parent.userData.proj;
+                                if(window.openModal && proj) window.openModal(proj);
+                            }
+                        }
+                    };
+
+                    
+                    renderer.domElement.addEventListener('mousemove', onMouseMove);
+                    renderer.domElement.addEventListener('click', onClick);
+                    renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: true });
 
                     const animate = () => {
                         requestAnimationFrame(animate);
                         
-                        sphere.rotation.y += 0.002;
-                        wireframeSphere.rotation.y += 0.002;
-                        markers.rotation.y += 0.002;
+                        
+                        sphere.rotation.y += 0.0008;
+                        wireframeSphere.rotation.y += 0.0008;
+                        markers.rotation.y += 0.0008;
                         
                         raycaster.setFromCamera(mouse, camera);
                         const intersects = raycaster.intersectObjects(markerObjects);
                         
+                        
+                        markerObjects.forEach(m => m.parent.scale.set(1, 1, 1));
+                        
                         if (intersects.length > 0) {
-                            document.body.style.cursor = 'pointer';
-                            intersects[0].object.scale.set(1.5, 1.5, 1.5);
+                            renderer.domElement.style.cursor = 'pointer'; 
+                            intersects[0].object.parent.scale.set(1.5, 1.5, 1.5); 
                         } else {
-                            document.body.style.cursor = 'none'; 
-                            markerObjects.forEach(m => m.scale.set(1, 1, 1));
+                            renderer.domElement.style.cursor = 'none'; 
                         }
 
                         renderer.render(scene, camera);
                     };
                     
                     const earthSection = document.getElementById('earth-section');
+                    let animationStarted = false;
+                    
                     if(earthSection && window.IntersectionObserver) {
                         const observer = new IntersectionObserver((entries) => {
-                            if(entries[0].isIntersecting) {
+                            
+                            if(entries[0].isIntersecting && !animationStarted) {
+                                animationStarted = true;
                                 animate();
                             }
                         });
@@ -1197,6 +1242,8 @@
                     window.addEventListener('resize', () => {
                         camera.aspect = window.innerWidth / window.innerHeight;
                         camera.updateProjectionMatrix();
+                        renderer.domElement.width = window.innerWidth;
+                        renderer.domElement.height = window.innerHeight;
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         
                         if(window.innerWidth < 768) {
